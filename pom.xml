@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    1、 头信息
+        xmlns: 命名空间，类似包名，因为xml的标签可自定义，需要命令空间来约束，XML命名空间提供避免元素命名冲突的方法
+        xmlns:xsi： xml遵循的标签规范
+        xsi:schemaLocation: 用来定义xmlschema的地址，也就是xml书写时需要遵循的语法
+-->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <!--
+        2、maven的基本信息
+            modelVersion: 声明项目描述符遵循哪一个POM模型版本。模型本身的版本很少改变，
+            虽然如此，但它仍然是必不可少的，这是为了当Maven引入了新的特性或者其他模型变更的时候，确保稳定性。
+            groupId: 公司或者组织的唯一标志，并且配置时生成的路径也是由此生成，
+            如com.winner.trade，maven会将该项目打成的jar包放本地路径：/com/winner/trade
+            artifactId: 本项目的唯一ID，一个groupId下面可能多个项目，就是靠artifactId来区分的
+            version: 本项目目前所处的版本号
+            packaging: 打包类型，可取值：pom , jar , maven-plugin , ejb , war , ear , rar , par等等
+            name: 项目的名称, Maven产生的文档用，可省略
+            url: 项目主页的URL, Maven产生的文档用 ，可省略
+
+            其中groupId，artifactId，version，packaging这四项组成了项目的唯一坐标。一般情况下，前面三项就足矣。
+   -->
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.wyl.basic</groupId>
+    <artifactId>blog-parent</artifactId>
+    <version>0.0.1</version>
+    <modules>
+        <module>blog-util</module>
+    </modules>
+    <packaging>pom</packaging>
+    <name>博客项目</name>
+    <description>博客项目公共模块</description>
+    <url>https://github.com/musicsss/cloud-study</url>
+
+    <properties>
+        <!-- jdk8 将这里改成 8 -->
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <dockerfile-maven-plugin.version>1.4.12</dockerfile-maven-plugin.version>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
+    </properties>
+    <!--
+        3、POM之间的关系
+     -->
+    <!--
+        a、依赖关系
+
+            groupId： 依赖项的组织名
+            artifactId: 依赖项的子项目名
+            version: 依赖项的版本
+            type: 依赖类型一般省略，默认类型是jar，其他还有jar，war，ejb-client和test-jar
+            scope: 依赖项的适用范围 ，包括compile，provided，runtime，test，system，exclusions [^1]
+            optional: 可选依赖，如果你在项目B中把C依赖声明为可选，你就需要在依赖于B的项目（例如项目A）中显式的引用对C的依赖。
+            exclusions: 排除项目中的依赖冲突时使用，不依赖该项目
+
+            scope 依赖项的适用范围
+                compile: 缺省值，适用于所有阶段，会随着项目一起发布。
+                provided: 类似compile，期望JDK、容器或使用者会提供这个依赖。如servlet.jar。
+                runtime: 只在运行时使用，如JDBC驱动，适用运行和测试阶段。
+                test，只在测试时使用，用于编译和运行测试代码。不会随项目发布。
+                system: 类似provided，需要显式提供包含依赖的jar，Maven不会在Repository中查找它。
+                optional: 当项目自身被依赖时，标注依赖是否传递。用于连续依赖时使用
+
+            我们知道，maven的依赖关系是有传递性的。如：A–>B，B–>C。但有时候，项目A可能不是必需依赖C，因此需要在项目A中排除对A的依赖。
+            在maven的依赖管理中，有两种方式可以对依赖关系进行，分别是可选依赖（Optional Dependencies）
+            以及依赖排除（Dependency Exclusions）。
+
+            可选依赖 Optional Dependencies
+
+            当一个项目A依赖另一个项目B时，项目A可能用到了项目B很少一部分功能，此时就可以在A中配置对B的可选依赖。
+            举例来说，项目B类似hibernate，它支持对mysql、oracle等各种数据库的支持，但是在引用这个项目时，
+            我们可能只用到其对mysql的支持，此时就可以在A项目中配置对项目B的可选依赖。
+
+            配置可选依赖的原因：
+            1、节约磁盘、内存等空间；
+            2、避免license许可问题；
+            3、避免类路径问题，等等。
+     -->
+
+    <!-- 4、MAVEN的六类属性 -->
+    <!--
+        a, maven内置属性
+            ${basedir}: 项目的根目录(包含pom.xml文件的目录)
+            ${version}: 项目版本
+    -->
+    <!--
+        b, POM属性
+           ${project.build.sourceDirectory}: 项目的主源码目录，默认为 src/main/java
+           ${project.build.testSourceDirectory}: 项目的测试源码目录，默认为 src/test/java
+           ${project.build.directory}: 项目构件输出目录，默认为 target/
+           ${project.outputDirectory}: 项目主代码编译输出目录，默认为 target/classes/
+           ${project.testOutputDirectory}: 项目测试代码编译输出目录，默认为 target/test-classes/
+           ${project.groupId}: 项目的 groupId
+           ${project.artifactId}: 项目的 artifactId
+           ${project.version}: 项目的 version，与${version}等价
+           ${project.build.fianlName}: 项目打包输出文件的名称，默认为"${project.artifactId} - ${project.version}"
+    -->
+
+    <dependencyManagement>
+    </dependencyManagement>
+    <dependencies>
+        <!--Lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+    </dependencies>
+</project>

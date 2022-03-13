@@ -4,12 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>blog-util</artifactId>
-        <groupId>org.wyl.basic</groupId>
+        <groupId>com.wyl.basic</groupId>
         <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>blog-core</artifactId>
+    <packaging>pom</packaging>
     <name>博客公共核心模块</name>
     <description>核心模块</description>
     <properties>
@@ -18,6 +19,10 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.wyl.basic</groupId>
+            <artifactId>blog-annotation</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>

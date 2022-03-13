@@ -2,19 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>blog-parent</artifactId>
-        <groupId>org.wyl.basic</groupId>
-        <version>0.0.1</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.wyl.basic</groupId>
     <artifactId>blog-util</artifactId>
     <version>0.0.1</version>
     <modules>
         <module>blog-dependencies</module>
         <module>blog-core</module>
         <module>blog-annotation</module>
+        <module>blog-xss-starter</module>
     </modules>
     <packaging>pom</packaging>
     <name>博客项目公共模块</name>
@@ -59,19 +56,49 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.wyl.basic</groupId>
+                <groupId>com.wyl.basic</groupId>
                 <artifactId>blog-dependencies</artifactId>
-                <version>${blog-dependencies.version}</version>
+                <version>${project.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.wyl.basic</groupId>
+                <groupId>com.wyl.basic</groupId>
                 <artifactId>blog-core</artifactId>
-                <version>${blog-dependencies.version}</version>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.wyl.basic</groupId>
+                <artifactId>blog-annotation</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <dependencies>
+        <!--Lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+    </dependencies>
 
 
     <build>

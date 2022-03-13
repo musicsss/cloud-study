@@ -23,11 +23,12 @@
             其中groupId，artifactId，version，packaging这四项组成了项目的唯一坐标。一般情况下，前面三项就足矣。
    -->
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.wyl.basic</groupId>
+    <groupId>com.wyl.basic</groupId>
     <artifactId>blog-parent</artifactId>
     <version>0.0.1</version>
     <modules>
         <module>blog-util</module>
+        <module>basic</module>
     </modules>
     <packaging>pom</packaging>
     <name>博客项目</name>
